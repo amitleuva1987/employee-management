@@ -101,10 +101,13 @@ class CompanyController extends Controller
         $company->company_type = $request->company_type;
         $company->website = $request->website;
         $company->company_description = $request->company_description;
-
+        if($company->isDirty()){
         $company->save() ;
 
         return redirect()->route('companies.index')->with('message','Company updated successfully!');
+        } else {
+        return redirect()->back()->with('error','You have made no changes in the company detail.');    
+        }
     }
 
     /**

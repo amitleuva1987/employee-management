@@ -117,7 +117,8 @@ class EmployeeController extends Controller
             'country' => 'required|max:255',
             'status' => 'required'
         ]);
-
+        
+        
         $employee->company_id = $request->company_name;
         $employee->first_name = $request->first_name;
         $employee->last_name = $request->last_name;
@@ -127,9 +128,14 @@ class EmployeeController extends Controller
         $employee->country = $request->country;
         $employee->status = $request->status;
 
+        if($employee->isDirty()){
+
         $employee->save();
 
         return redirect()->route('employees.index')->with('message','Employee updated successfully!');
+        } else {
+        return redirect()->back()->with('error','You have made no changes in the employee detail.');    
+        }
     }
 
     /**

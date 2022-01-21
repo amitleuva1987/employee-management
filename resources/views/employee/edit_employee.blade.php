@@ -2,6 +2,11 @@
 @section('content')
 <div class="container">
 <h2 class="mb-3">CREATE AN EMPLOYEE</h2>    
+@if(session()->has('error'))
+            <div class="alert alert-warning">
+                {{ session()->get('error') }}
+            </div>
+@endif
 <form class="row g-3" method="post" action="{{route('employees.update',$employee->employee_id)}}">
   @csrf  
   @method('PUT')

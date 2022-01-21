@@ -2,6 +2,11 @@
 @section('content')
 <div class="container">
 <h2 class="mb-3">CREATE A COMPANY</h2>    
+@if(session()->has('error'))
+            <div class="alert alert-warning">
+                {{ session()->get('error') }}
+            </div>
+@endif
 <form action="{{ route('companies.update', $company->company_id) }}" class="row g-3" method="post" >
   @csrf  
   @method('PUT')
