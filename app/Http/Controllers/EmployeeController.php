@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -19,10 +20,11 @@ class EmployeeController extends Controller
             session()->forget('company_id');
         }
         // list all employees
-        $employees = Employee::all(); //with('company')->get();
-        $companies = Company::has('employees')->get(['company_id','company_name']);
-
-        return view('employee.index',compact('employees','companies'));
+     // $employees_using_preceure = DB::select("call get_employees()");
+        $employees = Employee::with('company')->get(); 
+        $companies = Company::all(['company_id','company_name']);
+        
+        return view('employee.index',compact('employees','companies')); // 
     }
 
     /**

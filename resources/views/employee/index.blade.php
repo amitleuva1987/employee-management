@@ -49,7 +49,7 @@
             <tr>
                 <td>{{ $employee->employee_id }}</td>
                 <td>{{ $employee->first_name." ".$employee->last_name }}</td>
-                <td>{{ $employee->company->company_name }}</td>
+                <td>{{ $employee->company->company_name }}</td> 
                 <td>{{ $employee->email_address }}</td>
                 <td>{{ $employee->position }}</td>
                 <td>{{ $employee->city }}</td>

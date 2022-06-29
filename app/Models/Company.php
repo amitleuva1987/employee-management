@@ -17,11 +17,11 @@ class Company extends Model
         return $this->hasMany(Employee::class,'company_id','company_id');
     }
 
-    public static function boot() {
-        parent::boot();
+    // public static function boot() {
+    //     parent::boot();
 
-        static::deleting(function($company) { // before delete() method call this
-            $company->employees()->delete();
-        });
-    }
+    //     static::deleting(function($company) { // before delete() method call this
+    //         $company->employees()->delete();
+    //     });
+    // }
 }
