@@ -154,6 +154,9 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         // delete employee
+        if(Storage::disk('s3')->exists('employeess/X1BHzhpwTxUur69g22lTH6Bf4vlC21pSdXM0LlTX.jpg')) {
+            Storage::disk('s3')->delete('employeess/X1BHzhpwTxUur69g22lTH6Bf4vlC21pSdXM0LlTX.jpg');
+        }
         $employee->delete();
         return redirect()->route('employees.index')->with('message','Employee deleted successfully!');
     }
