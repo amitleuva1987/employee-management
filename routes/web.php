@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('employees/get_avtar/{id}/{image}',[App\Http\Controllers\EmployeeController::class,'get_avtar'])->name('get_avtar');
 Route::resource('companies',CompanyController::class);
 Route::resource('employees',EmployeeController::class);
 Route::post('set_session',[App\Http\Controllers\SessionController::class,'set_session'])->name('set_session');

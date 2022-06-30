@@ -11,7 +11,7 @@ class Employee extends Model
     
     protected $primaryKey = 'employee_id';
 
-    protected $fillable = ['company_id','first_name','last_name','email_address','position','city','country','status'];
+    protected $fillable = ['company_id','first_name','last_name','email_address','position','city','country','status','image'];
     
     public function company(){
         return $this->belongsTo(Company::class,'company_id','company_id');

@@ -41,6 +41,7 @@
                 <th>Position</th>
                 <th>City</th>
                 <th>Country</th>
+                <th>Image</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -54,6 +55,11 @@
                 <td>{{ $employee->position }}</td>
                 <td>{{ $employee->city }}</td>
                 <td>{{ $employee->country }}</td>
+                <?php if($employee->image !='') { ?>
+                <td><img src="{{ route('get_avtar',[$employee->employee_id,$employee->image]) }}" /></td>
+                <?php } else { ?>    
+                <td>&nbsp;</td>    
+                <?php } ?>    
                 <td>
                 <form action="{{ route('employees.destroy',$employee->employee_id) }}" method="POST">
                     @csrf

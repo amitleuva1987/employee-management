@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Company;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeeController extends Controller
 {
@@ -59,6 +59,8 @@ class EmployeeController extends Controller
             'status' => 'required'
         ]);
 
+        $image_name = $request->image->getClientOriginalName();
+
         $employee = Employee::create([
             'company_id' => $request->company_name,
             'first_name' => $request->first_name,
@@ -67,8 +69,11 @@ class EmployeeController extends Controller
             'position' => $request->position,
             'city' => $request->city,
             'country' => $request->country,
-            'status' => $request->status
+            'status' => $request->status,
+            'image' => $image_name
         ]);
+
+        $path = Storage::disk('s3')->putFileAs('employees/'.$employee->employee_id.'/', $request->file('image'),$image_name);
 
         if($employee){
             return redirect()->route('employees.index')->with('message','Employee created successfully!');
@@ -151,5 +156,10 @@ class EmployeeController extends Controller
         // delete employee
         $employee->delete();
         return redirect()->route('employees.index')->with('message','Employee deleted successfully!');
+    }
+
+    public function get_avtar($id,$image)
+    {
+        return Storage::disk('s3')->response('employees/'.$id.'/'.$image);
     }
 }

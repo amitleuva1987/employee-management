@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
 <h2 class="mb-3">CREATE AN EMPLOYEE</h2>    
-<form class="row g-3" method="post" action="{{route('employees.store')}}">
+<form class="row g-3" method="post" action="{{route('employees.store')}}" enctype="multipart/form-data">
   @csrf  
   <div class="col-md-6">
     <label for="company_name" class="form-label">Company Name <span style="color:red">*</span></label>
@@ -55,6 +55,13 @@
     <label for="country" class="form-label">Country <span style="color:red">*</span></label>
     <input type="text" name="country" class="form-control" id="country" value="{{old('country')}}">
     @error('country')
+    <p style="color:red">{{ $message }}</p>
+    @enderror
+  </div>
+  <div class="col-md-6">
+    <label for="country" class="form-label">Image <span style="color:red">*</span></label>
+    <input type="file" name="image" class="form-control" id="image">
+    @error('image')
     <p style="color:red">{{ $message }}</p>
     @enderror
   </div>
