@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\EmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -46,19 +47,8 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
-        $request->validate([
-            'company_name' => 'required',
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'email_address' => 'required|email',
-            'position' => 'required|max:255',
-            'city' => 'required|max:255',
-            'country' => 'required|max:255',
-            'status' => 'required'
-        ]);
-
         $image_name = $request->image->getClientOriginalName();
 
         $employee = Employee::create([
@@ -73,7 +63,8 @@ class EmployeeController extends Controller
             'image' => $image_name
         ]);
 
-        $path = Storage::disk('s3')->putFileAs('employees/'.$employee->employee_id.'/', $request->file('image'),$image_name);
+        $path = Storage::disk('local')->putFileAs('employees/'.$employee->employee_id.'/', $request->file('image'),$image_name);
+    //    $path = Storage::disk('s3')->putFileAs('employees/'.$employee->employee_id.'/', $request->file('image'),$image_name);
 
         if($employee){
             return redirect()->route('employees.index')->with('message','Employee created successfully!');
@@ -111,20 +102,9 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(EmployeeRequest $request, Employee $employee)
     {
         // update employee
-        $request->validate([
-            'company_name' => 'required',
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'email_address' => 'required|email',
-            'position' => 'required|max:255',
-            'city' => 'required|max:255',
-            'country' => 'required|max:255',
-            'status' => 'required'
-        ]);
-        
         
         $employee->company_id = $request->company_name;
         $employee->first_name = $request->first_name;
@@ -154,15 +134,19 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         // delete employee
-        if(Storage::disk('s3')->exists('employeess/X1BHzhpwTxUur69g22lTH6Bf4vlC21pSdXM0LlTX.jpg')) {
-            Storage::disk('s3')->delete('employeess/X1BHzhpwTxUur69g22lTH6Bf4vlC21pSdXM0LlTX.jpg');
+        if(Storage::disk('local')->exists('employeess/X1BHzhpwTxUur69g22lTH6Bf4vlC21pSdXM0LlTX.jpg')) {
+            Storage::disk('local')->delete('employeess/X1BHzhpwTxUur69g22lTH6Bf4vlC21pSdXM0LlTX.jpg');
         }
+        // if(Storage::disk('s3')->exists('employeess/X1BHzhpwTxUur69g22lTH6Bf4vlC21pSdXM0LlTX.jpg')) {
+        //     Storage::disk('s3')->delete('employeess/X1BHzhpwTxUur69g22lTH6Bf4vlC21pSdXM0LlTX.jpg');
+        // }
         $employee->delete();
         return redirect()->route('employees.index')->with('message','Employee deleted successfully!');
     }
 
     public function get_avtar($id,$image)
     {
-        return Storage::disk('s3')->response('employees/'.$id.'/'.$image);
+        return Storage::disk('local')->get('employees/'.$id.'/'.$image);
+    //    return Storage::disk('s3')->get('employees/'.$id.'/'.$image);
     }
 }
