@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use App\Http\Requests\ComapnyRequest;
 
 class CompanyController extends Controller
 {
@@ -36,16 +37,9 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ComapnyRequest $request)
     {
         //  add company
-        $request->validate([
-            'company_name' => 'required|unique:companies|max:255',
-            'company_type' => 'required',
-            'website' => 'required|url',
-            'company_description' => 'required'
-        ]);
-
         $company = Company::create([
             'company_name' => $request->company_name,
             'company_type' => $request->company_type,
