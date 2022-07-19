@@ -16,7 +16,7 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id('company_id');
             $table->string('company_name');
-            $table->enum('company_type',['Public Limited Company','Private Limited Company','Registered Company']);
+            $table->enum('company_type', ['Public Limited Company', 'Private Limited Company', 'Registered Company']);
             $table->string('website');
             $table->text('company_description');
             $table->timestamps();

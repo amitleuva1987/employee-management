@@ -19,7 +19,7 @@ class EmployeeFactory extends Factory
     // User::factory()
     //         ->hasPosts(3)
     //         ->create();
-     
+
     public function definition()
     {
         return [
@@ -28,7 +28,7 @@ class EmployeeFactory extends Factory
             'last_name' => $this->faker->lastname(),
             'email_address' => $this->faker->unique()->safeEmail(),
             'position' => $this->faker->name(),
-            'city' => $this->faker->randomElement(['surat','ahmedabad','baroda','mehsana','palanpur']),
+            'city' => $this->faker->randomElement(['surat', 'ahmedabad', 'baroda', 'mehsana', 'palanpur']),
             'country' => 'India',
             'status' => 'Active',
         ];

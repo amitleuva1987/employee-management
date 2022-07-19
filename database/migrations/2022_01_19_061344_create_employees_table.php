@@ -22,7 +22,7 @@ class CreateEmployeesTable extends Migration
             $table->string('position');
             $table->string('city');
             $table->string('country');
-            $table->enum('status',['Active','Inactive']);
+            $table->enum('status', ['Active', 'Inactive']);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

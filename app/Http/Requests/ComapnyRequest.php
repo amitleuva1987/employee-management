@@ -27,7 +27,7 @@ class ComapnyRequest extends FormRequest
             'company_name' => 'required|unique:companies|max:255',
             'company_type' => 'required',
             'website' => 'required|url',
-            'company_description' => 'required'
+            'company_description' => 'required',
         ];
     }
 }

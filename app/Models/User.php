@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifiedEmailQueued;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Notifications\VerifiedEmailQueued;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new VerifiedEmailQueued);
+        $this->notify(new VerifiedEmailQueued());
     }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -43,7 +46,6 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<string, string>
      */
-    
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

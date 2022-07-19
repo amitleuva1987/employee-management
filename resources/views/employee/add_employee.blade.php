@@ -6,13 +6,13 @@
   @csrf  
   <div class="col-md-6">
     <label for="company_name" class="form-label">Company Name <span style="color:red">*</span></label>
-    <select name="company_name" id="company_name" class="form-select">
+    <select name="company_id" id="company_id" class="form-select">
       <option selected value="">Choose...</option>
       @foreach($companies as $company)
       <option @if(session()->has('company_id') &&  session()->get('company_id') == $company->company_id) {{ __('selected') }}@endif value="{{ $company->company_id }}">{{ $company->company_name }}</option>
       @endforeach
     </select>
-    @error('company_name')
+    @error('company_id')
     <p style="color:red">{{ $message }}</p>
     @enderror
   </div>

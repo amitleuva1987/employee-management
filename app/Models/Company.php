@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     use HasFactory;
-    
-    protected $primaryKey = 'company_id';
-    
-    protected $fillable = ['company_name','company_type','website','company_description'];
 
-    public function employees(){
-        return $this->hasMany(Employee::class,'company_id','company_id');
+    protected $primaryKey = 'company_id';
+
+    protected $fillable = ['company_name', 'company_type', 'website', 'company_description'];
+
+    public function employees()
+    {
+        return $this->hasMany(Employee::class, 'company_id', 'company_id');
     }
 
     // public static function boot() {

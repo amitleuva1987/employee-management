@@ -25,9 +25,9 @@ class CompanyFactory extends Factory
     {
         return [
             'company_name' => $this->faker->name(),
-            'company_type' => $this->faker->randomElement(['Public Limited Company','Private Limited Company', 'Registered Company']),
-            'website' => "http://".Str::slug($this->faker->name()).".com",
-            'company_description' => $this->faker->text()
+            'company_type' => $this->faker->randomElement(['Public Limited Company', 'Private Limited Company', 'Registered Company']),
+            'website' => 'http://'.Str::slug($this->faker->name()).'.com',
+            'company_description' => $this->faker->text(),
         ];
     }
 }

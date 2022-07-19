@@ -26,30 +26,30 @@ class EmployeeRequest extends FormRequest
     public function rules()
     {
         return [
-            'company_name' => 'required',
+            'company_id' => 'required',
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'email_address' => 'required|email:rfc,dns',
             'position' => 'required|max:255',
             'city' => 'required|max:255',
             'country' => 'required|max:255',
-            'status' => 'required'
+            'status' => 'required',
         ];
     }
 
     public function messages()
     {
-    return [
-        'company_name.required' => 'Company Name is required',
-        'first_name.max' => 'First name can not be more than 255 characters',
-        'email_address.email' => 'This email address does not exist'
-    ];
+        return [
+            'company_name.required' => 'Company Name is required',
+            'first_name.max' => 'First name can not be more than 255 characters',
+            'email_address.email' => 'This email address does not exist',
+        ];
     }
 
     public function attributes()
     {
-    return [
-        'last_name' => 'Sirname',
-    ];
+        return [
+            'last_name' => 'Sirname',
+        ];
     }
 }

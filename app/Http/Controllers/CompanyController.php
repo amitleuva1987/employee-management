@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ComapnyRequest;
 use App\Models\Company;
 use Illuminate\Http\Request;
-use App\Http\Requests\ComapnyRequest;
 
 class CompanyController extends Controller
 {
@@ -17,7 +17,8 @@ class CompanyController extends Controller
     {
         //  list all companies
         $companies = Company::all();
-        return view('company.index',compact('companies'));
+
+        return view('company.index', compact('companies'));
     }
 
     /**
@@ -44,11 +45,11 @@ class CompanyController extends Controller
             'company_name' => $request->company_name,
             'company_type' => $request->company_type,
             'website' => $request->website,
-            'company_description' => $request->company_description
+            'company_description' => $request->company_description,
         ]);
 
-        if($company){
-            return redirect()->route('companies.index')->with('message','Company created successfully!');
+        if ($company) {
+            return redirect()->route('companies.index')->with('message', 'Company created successfully!');
         }
     }
 
@@ -72,7 +73,7 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         // Edit company
-          return view('company.edit_company',compact('company'));        
+        return view('company.edit_company', compact('company'));
     }
 
     /**
@@ -88,19 +89,19 @@ class CompanyController extends Controller
             'company_name' => 'required|max:255',
             'company_type' => 'required',
             'website' => 'required|url',
-            'company_description' => 'required'
+            'company_description' => 'required',
         ]);
 
         $company->company_name = $request->company_name;
         $company->company_type = $request->company_type;
         $company->website = $request->website;
         $company->company_description = $request->company_description;
-        if($company->isDirty()){
-        $company->save() ;
+        if ($company->isDirty()) {
+            $company->save();
 
-        return redirect()->route('companies.index')->with('message','Company updated successfully!');
+            return redirect()->route('companies.index')->with('message', 'Company updated successfully!');
         } else {
-        return redirect()->back()->with('error','You have made no changes in the company detail.');    
+            return redirect()->back()->with('error', 'You have made no changes in the company detail.');
         }
     }
 
@@ -115,6 +116,7 @@ class CompanyController extends Controller
         // delete company
         $company->employees()->delete();
         $company->delete();
-        return redirect()->route('companies.index')->with('message','Company deleted successfully!');
+
+        return redirect()->route('companies.index')->with('message', 'Company deleted successfully!');
     }
 }
