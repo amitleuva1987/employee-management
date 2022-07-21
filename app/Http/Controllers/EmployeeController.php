@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Storage;
@@ -93,11 +94,9 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(EmployeeRequest $request, Employee $employee)
+    public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        // update employee
-
-        $employee->company_id = $request->company_name;
+        $employee->company_id = $request->company_id;
         $employee->first_name = $request->first_name;
         $employee->last_name = $request->last_name;
         $employee->email_address = $request->email_address;
@@ -106,13 +105,9 @@ class EmployeeController extends Controller
         $employee->country = $request->country;
         $employee->status = $request->status;
 
-        if ($employee->isDirty()) {
-            $employee->update();
+        $employee->update();
 
-            return redirect()->route('employees.index')->with('message', 'Employee updated successfully!');
-        } else {
-            return redirect()->back()->with('error', 'You have made no changes in the employee detail.');
-        }
+        return redirect()->route('employees.index')->with('message', 'Employee updated successfully!');
     }
 
     /**
