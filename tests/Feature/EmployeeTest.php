@@ -22,8 +22,6 @@ class EmployeeTest extends TestCase
     public function test_can_see_employee_list()
     {
         $this->assertDatabaseCount('employees', 0);
-        $this->seed();
-        $this->assertDatabaseCount('employees', 144);
         $response = $this->get('/employees');
         $response->assertStatus(200);
     }
