@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use App\Models\Employee;
+use App\Models\Company;
 
 class EmployeeTest extends TestCase
 {
@@ -20,6 +21,9 @@ class EmployeeTest extends TestCase
 
     public function test_can_see_employee_list()
     {
+        $this->assertDatabaseCount('employees', 0);
+        $this->seed();
+        $this->assertDatabaseCount('employees', 144);
         $response = $this->get('/employees');
         $response->assertStatus(200);
     }
@@ -50,9 +54,10 @@ class EmployeeTest extends TestCase
     {
         Storage::fake('avatars');
         $file = UploadedFile::fake()->image('avatar.jpg');
+        $company = Company::factory()->create();
         
         $response = $this->json('POST','/employees',[
-            'company_id' => 1,
+            'company_id' => $company->company_id,
             'first_name' => 'ritesh',
             'last_name' => 'patel',
             'email_address' => 'abc@gmail.com',
@@ -77,9 +82,10 @@ class EmployeeTest extends TestCase
     {
         Storage::fake('avatars');
         $file = UploadedFile::fake()->image('avatar.jpg');
+        $company = Company::factory()->create();
 
         $employee = Employee::create([
-            'company_id' => 1,
+            'company_id' => $company->company_id,
             'first_name' => 'Amit',
             'last_name' => 'Leuva',
             'email_address' => 'amitleuva@gmail.com',
@@ -91,7 +97,7 @@ class EmployeeTest extends TestCase
         ]);
 
         $response = $this->json('PUT','/employees/'.$employee->employee_id,[
-            'company_id' => 1,
+            'company_id' => $company->company_id,
             'first_name' => 'mohir',
             'last_name' => '',
             'email_address' => 'amitle1uva@gmail.com',
@@ -111,5 +117,72 @@ class EmployeeTest extends TestCase
                 "city" => ["The city field is required."],
             ]
         ]);
+    }
+
+    public function test_can_edit_an_employee()
+    {
+        Storage::fake('avatars');
+        $file = UploadedFile::fake()->image('avatar.jpg');
+        $company = Company::factory()->create();
+
+        $employee = Employee::create([
+            'company_id' => $company->company_id,
+            'first_name' => 'Amit',
+            'last_name' => 'Leuva',
+            'email_address' => 'amitleuva@gmail.com',
+            'position' => 'developer',
+            'city' => 'ahmedabad',
+            'country' => 'India',
+            'image' => $file,
+            'status' => 'Active'
+        ]);
+        
+        $response = $this->json('PUT','/employees/'.$employee->employee_id,[
+            'company_id' => $employee->company_id,
+            'first_name' => 'Mohir',
+            'last_name' => 'Mehra',
+            'email_address' => 'amitleuva@gmail.com',
+            'position' => 'Scrum Master',
+            'city' => 'ahmedabad',
+            'country' => 'India',
+            'image' => $file,
+            'status' => 'Active'
+        ]);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('employees', [
+            'first_name' => 'Mohir',
+            'last_name' => 'Mehra'
+        ]);
+    }
+
+    public function test_can_delete_an_employee()
+    {
+        Storage::fake('avatars');
+        $file = UploadedFile::fake()->image('avatar.jpg');
+        $company = Company::factory()->create();
+
+        $employee = Employee::create([
+            'company_id' => $company->company_id,
+            'first_name' => 'Amit',
+            'last_name' => 'Leuva',
+            'email_address' => 'amitleuva@gmail.com',
+            'position' => 'developer',
+            'city' => 'ahmedabad',
+            'country' => 'India',
+            'image' => $file,
+            'status' => 'Active'
+        ]);
+
+        $this->assertModelExists($employee);
+        $this->assertDatabaseCount('employees', 1);
+
+        $response = $this->json('DELETE','/employees/'.$employee->employee_id);
+
+        $this->assertModelMissing($employee);
+        $this->assertDatabaseCount('employees', 0);
+        
+        $response->assertStatus(302);
     }
 }
